@@ -16,48 +16,49 @@
   var marker = document.querySelector('a-marker');
   // Objects
   <% if(response.objects[0].obj != "No-obj"){ %>
-    <% for(var key in response.objects) { %>
-      var entity = document.createElement('a-entity');
-      entity.setAttribute('geometry',{
-        primitive: '<%= response.objects[key].obj %>'
-      });
-      entity.setAttribute('material',{
-        color: '<%= response.objects[key].color %>',
-        opacity: <%= response.objects[key].opacity %>,
-      });
-      entity.setAttribute('position',"<%= response.objects[key].pos %>");
-      entity.setAttribute('scale',"<%= response.objects[key].scale %>");
-      entity.setAttribute('rotation',"<%= response.objects[key].rotate %>")
-      marker.appendChild(entity);
-      <% } %>
-    <% } %>
-    //Images
-    <% if(response.imgUrl != "no-img") { %>
-      var entity = document.createElement('a-entity');
-      entity.setAttribute('geometry',{
-        primitive: 'plane'
-      });
-      entity.setAttribute('material',{
-        src: '<%= response.imgUrl %>',
-        side: 'double'
-      });
-      entity.setAttribute('position',"0 0.4 0");
-      entity.setAttribute('rotation',"-90 0 0");
-      marker.appendChild(entity);
-    <% } %>
-    //Videos
-    <% if(response.videoUrl != "No-video") { %>
-      var entity = document.createElement('a-entity');
-      entity.setAttribute('geometry',{
-        primitive: 'plane'
-      });
-      entity.setAttribute('material',{
-        src: '<%= response.videoUrl %>',
-        side: 'double'
-      });
-      entity.setAttribute('position',"0 0.4 0");
-      entity.setAttribute('rotation',"-90 0 0");
-      marker.appendChild(entity);
-    <% } %>
+  <% for(var key in response.objects) { %>
+  var entity = document.createElement('a-entity');
+  entity.setAttribute('geometry', {
+    primitive: '<%= response.objects[key].obj %>'
+  });
+  entity.setAttribute('material', {
+    color: '<%= response.objects[key].color %>',
+    opacity: <%= response.objects[key].opacity %>,
+  });
+  entity.setAttribute('position', "<%= response.objects[key].pos %>");
+  entity.setAttribute('scale', "<%= response.objects[key].scale %>");
+  entity.setAttribute('rotation', "<%= response.objects[key].rotate %>")
+  marker.appendChild(entity);
+  <% } %>
+  <% } %>
+  //Images
+  <% if(response.imgUrl != "no-img") { %>
+  var entity = document.createElement('a-entity');
+  entity.setAttribute('geometry', {
+    primitive: 'plane'
+  });
+  entity.setAttribute('material', {
+    src: '<%= response.imgUrl %>',
+    side: 'double'
+  });
+  entity.setAttribute('position', "0 0.4 0");
+  entity.setAttribute('rotation', "-90 0 0");
+  marker.appendChild(entity);
+  <% } %>
+  //Videos
+  <% if(response.videoUrl != "No-video") { %>
+  var entity = document.createElement('a-entity');
+  entity.setAttribute('geometry', {
+    primitive: 'plane'
+  });
+  entity.setAttribute('material', {
+    src: '<%= response.videoUrl %>',
+    side: 'double'
+  });
+  entity.setAttribute('position', "0 0.4 0");
+  entity.setAttribute('rotation', "-90 0 0");
+  marker.appendChild(entity);
+  <% } %>
 </script>
+
 </html>
