@@ -1,0 +1,214 @@
+<html>
+
+<head>
+  <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/superagent/3.5.2/superagent.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .overlay {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.9);
+      overflow-x: hidden;
+      transition: 0.5s;
+    }
+
+    .overlay-content {
+      position: relative;
+      top: 25%;
+      width: 100%;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .overlay a {
+      padding: 8px;
+      text-decoration: none;
+      font-size: 36px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .overlay a:hover,
+    .overlay a:focus {
+      color: #f1f1f1;
+    }
+
+    .overlay .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 45px;
+      font-size: 60px;
+    }
+
+    @media screen and (max-height: 450px) {
+      .overlay a {
+        font-size: 20px
+      }
+      .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+      }
+    }
+  </style>
+</head>
+
+<body style="background-color:#FF5733;">
+
+  <div id="myNav" class="overlay">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+    <div class="overlay-content">
+      <h1 id="showName" style="color:white"></h1>
+      <h3 style="color:white">Choose the color</h3>
+      <input type="color" name="myColor" id="myColor" value="#ff0000">
+      <h3 style="color:white">Choose the opacity</h3>
+      <input type="number" name="myOpacity" id="myOpacity" value="1" min="0" max="1" step="0.1" />
+      <h3 style="color:white">Choose the scale in 3 axes</h3>
+      <input type="text" name="myScale" id="myScale" value="1 1 1" />
+      <h3 style="color:white">Choose the position in 3 axes</h3>
+      <input type="text" name="myPos" id="myPos" value="0 0 0" />
+      <h3 style="color:white">Choose the Rotation in the 3 axes</h3>
+      <input type="text" name="myRotate" id="myRotate" value="0 0 0" />
+      <br />
+      <input type="button" value="OK" onclick="addObject()" />
+    </div>
+  </div>
+
+  <h1 style="color: white">Objects</h1>
+  <input type="button" name="obj_name" value="box" onclick="openNav('box')" />
+  <input type="button" name="obj_name" value="cylinder" onclick="openNav('cylinder')" />
+  <input type="button" name="obj_name" value="sphere" onclick="openNav('sphere')" />
+  <input type="button" name="obj_name" value="cone" onclick="openNav('cone')" />
+  <input type="button" name="obj_name" value="torus" onclick="openNav('torus')" />
+  <input type="button" name="obj_name" value="torusKnot" onclick="openNav('torusKnot')" />
+  <!--<button onclick="onSubmit()">Submit</button>-->
+
+  <!-- <form action="/upload_post" method="post" enctype="multipart/form-data"> -->
+  <h1 style="color: white">Select image to upload:</h1>
+  <input type="file" name="fileToUpload" id="fileToUpload">
+  <input type="submit" value="Upload Image" name="submit" onclick=submit()>
+  <div id="myUploadDiv" style="color: white"></div>
+
+  <h1 style="color: white">Select Video to upload:</h1>
+  <input type="file" name="videoToUpload" id="videoToUpload">
+  <input type="submit" value="Upload Video" name="submit" onclick=submitVideo()>
+  <div id="myUploadDiv1" style="color: white"></div>
+
+  <form action="/post_test" method="GET">
+    <h2 style="color: white">Select Your marker</h2>
+
+    <img src="/start.jpg" width="300" height="300" />
+    <input type="radio" name="file_name" value="/patt.start" checked="checked" />
+    <img src="/pratik1.jpg" width="300" height="300" />
+    <input type="radio" name="file_name" value="/patt.pratik" />
+
+    <input type="hidden" id="myData" name="myData" value="" />
+    <input type="hidden" id="myImageUrl" name="myImageUrl" value="" />
+    <input type="hidden" id="myVideoUrl" name="myVideoUrl" value="" />
+    <input type="Submit" value="Submit" />
+  </form>
+
+  <div id="myDiv" style="color: white"></div>
+  <script>
+    function openNav(obj) {
+      document.getElementById("myNav").style.width = "100%";
+      document.getElementById("showName").innerHTML = obj;
+    }
+
+    function closeNav() {
+      document.getElementById("myNav").style.width = "0%";
+    }
+    myObjJSON = [];
+    myString = "";
+
+    //Function to add an Objects
+    function addObject() {
+      //Pushes all the properties of the objects given by the user in a JSON.
+      myObjJSON.push({
+        obj: document.getElementById("showName").textContent,
+        color: document.getElementById("myColor").value,
+        opacity: document.getElementById("myOpacity").value,
+        scale: document.getElementById('myScale').value,
+        pos: document.getElementById('myPos').value,
+        rotate: document.getElementById('myRotate').value
+      });
+      //converts the JSON to string
+      myString = JSON.stringify(myObjJSON);
+      //Puts the string in a hidden input type to send to the backend.
+      document.getElementById("myData").value = myString;
+      // *********** Find a better way to display ************ //
+      document.getElementById('myDiv').innerHTML = myString + "<br />";
+
+      //Logs
+      for (var x in myObjJSON) {
+        console.log(myObjJSON[x]);
+      }
+
+      closeNav();
+    }
+
+    function submitVideo() {
+      //Image Upload
+      var file = document.getElementById("videoToUpload").files;
+      getSignedUploadLink(file[0], function(res) {
+        a = JSON.parse(res);
+        console.log("got upload link ", a.url)
+        //Puts the url in the hidden input
+        document.getElementById('myVideoUrl').value = a.url;
+        document.getElementById('myUploadDiv1').innerHTML = "Uploaded!";
+        uploadFile(file[0], JSON.parse(res).signedRequest)
+      });
+
+      console.log(file);
+    }
+
+    function submit() {
+      //Image Upload
+      var file = document.getElementById("fileToUpload").files;
+      getSignedUploadLink(file[0], function(res) {
+        a = JSON.parse(res);
+        console.log("got upload link ", a.url)
+        //Puts the url in the hidden input
+        document.getElementById('myImageUrl').value = a.url;
+        document.getElementById('myUploadDiv').innerHTML = "Uploaded!";
+        uploadFile(file[0], JSON.parse(res).signedRequest)
+      });
+
+      console.log(file);
+    }
+
+    var DEVEL = "https://enigmatic-everglades-20572.herokuapp.com/";
+    var SIGNED_UPLOAD = DEVEL + 'api/v1/signUpload?';
+    //Generates a signed URL for upload to AWS
+    function getSignedUploadLink(fileObject, successFn) {
+      var signURL = `${SIGNED_UPLOAD}file-name=${fileObject.name}&file-type=${fileObject.type}`;
+      $.ajax({
+        url: signURL,
+        type: "GET",
+        success: successFn
+      })
+    }
+
+    function uploadFile(file, signedRequest) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("PUT", signedRequest, true);
+      xhr.onload = function() {
+        console.log(xhr.responseText)
+      }
+      xhr.send(file);
+    }
+  </script>
+</body>
