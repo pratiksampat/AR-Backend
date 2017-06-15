@@ -64,7 +64,7 @@ app.get('/post_test',function(req,res){
     }
   }
   app.render('Ar_test.ejs',response,function(err,html){
-  console.log(err);
+  //console.log(err);
   console.log(html);
   res.send(html);
   })
