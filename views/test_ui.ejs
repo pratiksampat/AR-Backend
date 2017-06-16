@@ -78,9 +78,20 @@
       <h3 style="color:white">Choose the scale in 3 axes</h3>
       <input type="text" name="myScale" id="myScale" value="1 1 1" />
       <h3 style="color:white">Choose the position in 3 axes</h3>
-      <input type="text" name="myPos" id="myPos" value="0 0 0" />
+      <input type="text" name="myPos" id="myPos" value="0.5 0 0" />
       <h3 style="color:white">Choose the Rotation in the 3 axes</h3>
       <input type="text" name="myRotate" id="myRotate" value="0 0 0" />
+
+      <h3 style="color:white">Add Animation(Optional)</h3>
+      <select name="myAnimation" id="myAnimation">
+        <option value="disabled" selected>No-Animation</option>
+        <option value="rotation">rotation</option>
+        <option value="scale">scale</option>
+        <option value="position">position</option>
+      </select>
+
+      <h2 style="color:white">To</h2>
+      <input type="text" name="to" id="to" value="0 0 0" />
       <br />
       <input type="button" value="OK" onclick="addObject()" />
     </div>
@@ -142,7 +153,9 @@
         opacity: document.getElementById("myOpacity").value,
         scale: document.getElementById('myScale').value,
         pos: document.getElementById('myPos').value,
-        rotate: document.getElementById('myRotate').value
+        rotate: document.getElementById('myRotate').value,
+        animate: document.getElementById('myAnimation').value,
+        to: document.getElementById('to').value
       });
       //converts the JSON to string
       myString = JSON.stringify(myObjJSON);
@@ -189,6 +202,7 @@
       console.log(file);
     }
 
+    /** Getting the Signed Link and uplaod to AWS **/
     var DEVEL = "https://enigmatic-everglades-20572.herokuapp.com/";
     var SIGNED_UPLOAD = DEVEL + 'api/v1/signUpload?';
     //Generates a signed URL for upload to AWS

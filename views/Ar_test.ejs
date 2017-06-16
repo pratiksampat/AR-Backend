@@ -8,6 +8,9 @@
 <body>
   <a-scene embedded artoolkit='sourceType: webcam;'>
     <a-marker type="pattern" url="<%= response.pattern %>">
+      <!-- <a-entity geometry="primitive: box" material="color: red">
+        <a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+      </a-entity> -->
     </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
@@ -16,20 +19,29 @@
   var marker = document.querySelector('a-marker');
   // Objects
   <% if(response.objects[0].obj != "No-obj"){ %>
-  <% for(var key in response.objects) { %>
-  var entity = document.createElement('a-entity');
-  entity.setAttribute('geometry', {
-    primitive: '<%= response.objects[key].obj %>'
-  });
-  entity.setAttribute('material', {
-    color: '<%= response.objects[key].color %>',
-    opacity: <%= response.objects[key].opacity %>,
-  });
-  entity.setAttribute('position', "<%= response.objects[key].pos %>");
-  entity.setAttribute('scale', "<%= response.objects[key].scale %>");
-  entity.setAttribute('rotation', "<%= response.objects[key].rotate %>")
-  marker.appendChild(entity);
-  <% } %>
+    <% for(var key in response.objects) { %>
+    var entity = document.createElement('a-entity');
+    entity.setAttribute('geometry', {
+      primitive: '<%= response.objects[key].obj %>'
+    });
+    entity.setAttribute('material', {
+      color: '<%= response.objects[key].color %>',
+      opacity: <%= response.objects[key].opacity %>,
+    });
+    entity.setAttribute('position', "<%= response.objects[key].pos %>");
+    entity.setAttribute('scale', "<%= response.objects[key].scale %>");
+    entity.setAttribute('rotation', "<%= response.objects[key].rotate %>");
+    entity.setAttribute('id', "obj-id");
+    <% if(response.objects[key].animate!= "No-Animation") { %>
+      var animation = document.createElement('a-animation');
+      animation.setAttribute('attribute',"<%= response.objects[key].animate %>");
+      animation.setAttribute('dur',"5000");
+      animation.setAttribute('to',"<%= response.objects[key].to %>");
+      animation.setAttribute('repeat',"indefinite");
+      entity.appendChild(animation);
+    <% } %>
+    marker.appendChild(entity);
+    <% } %>
   <% } %>
   //Images
   <% if(response.imgUrl != "no-img") { %>
