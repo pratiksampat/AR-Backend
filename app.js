@@ -9,15 +9,23 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.json())
 
+//index of the creation page.
 app.get('/', function(req, res) {
   res.render('test_ui.ejs');
 });
 
-app.get('/post_test', function(req, res) {
+//gets the from data from creation page and renders the AR page
+app.get('/AR', function(req, res) {
+  //Get the data
   objData = req.query.myData;
   imgData = req.query.myImageUrl;
   videoData = req.query.myVideoUrl;
 
+  //Takes care of all the conditions when either one data is not present
+  //When no object obj: 'No-obj'
+  //When no image imgUrl = 'no-img'
+  //When no video videoUrl = "No-video"
+  //These are then checked in the template to render and display
   if (objData.length != 0) {
     response = JSON.parse(objData);
     response = {
@@ -32,7 +40,7 @@ app.get('/post_test', function(req, res) {
     if (imgData.length != 0) {
       response.imgUrl = imgData;
     } else {
-      response.imgUrl = 'no-img';
+      response.imgUrl = 'No-img';
     }
     console.log(response);
   } else {
@@ -57,9 +65,10 @@ app.get('/post_test', function(req, res) {
     if (imgData.length != 0) {
       response.imgUrl = imgData;
     } else {
-      response.imgUrl = 'no-img';
+      response.imgUrl = 'No-img';
     }
   }
+  //Render the page - res.render can also be used but here even errors can be monitored.
   app.render('Ar_test.ejs', response, function(err, html) {
     //console.log(err);
     console.log(html);
@@ -67,6 +76,7 @@ app.get('/post_test', function(req, res) {
   })
 });
 
+//Listen to the port 3000. can be changed for local deployment.
 app.listen(process.env.PORT || 3000, function() {
   console.log('Example app listening on port 3000!')
 })

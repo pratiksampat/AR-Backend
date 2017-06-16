@@ -8,9 +8,6 @@
 <body>
   <a-scene embedded artoolkit='sourceType: webcam;'>
     <a-marker type="pattern" url="<%= response.pattern %>">
-      <!-- <a-entity geometry="primitive: box" material="color: red">
-        <a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
-      </a-entity> -->
     </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
@@ -18,6 +15,7 @@
 <script>
   var marker = document.querySelector('a-marker');
   // Objects
+    //Checks if the objects are present
   <% if(response.objects[0].obj != "No-obj"){ %>
     <% for(var key in response.objects) { %>
     var entity = document.createElement('a-entity');
@@ -44,7 +42,8 @@
     <% } %>
   <% } %>
   //Images
-  <% if(response.imgUrl != "no-img") { %>
+    //Checks if the image is present
+  <% if(response.imgUrl != "No-img") { %>
   var entity = document.createElement('a-entity');
   entity.setAttribute('geometry', {
     primitive: 'plane'
@@ -58,6 +57,7 @@
   marker.appendChild(entity);
   <% } %>
   //Videos
+    //Checks if the video iss present
   <% if(response.videoUrl != "No-video") { %>
   var entity = document.createElement('a-entity');
   entity.setAttribute('geometry', {
