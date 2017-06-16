@@ -33,7 +33,9 @@
       </select>
 
       <h2 style="color:white">To</h2>
-      <input type="text" name="to" id="to" value="0 0 0" />
+      <input type="text" name="to" id="to" value="0 0 0" /><br />
+      <label style="color: white">Repeat Infinite</label>
+      <input type="checkbox" name="repeat" id="repeat" value="indefinite" checked="checked" />
       <br />
       <input type="button" value="OK" onclick="addObject()" />
     </div>
@@ -89,16 +91,32 @@
     //Function to add an Objects
     function addObject() {
       //Pushes all the properties of the objects given by the user in a JSON.
-      myObjJSON.push({
-        obj: document.getElementById("showName").textContent,
-        color: document.getElementById("myColor").value,
-        opacity: document.getElementById("myOpacity").value,
-        scale: document.getElementById('myScale').value,
-        pos: document.getElementById('myPos').value,
-        rotate: document.getElementById('myRotate').value,
-        animate: document.getElementById('myAnimation').value,
-        to: document.getElementById('to').value
-      });
+      if(document.getElementById('repeat').checked == true){
+        myObjJSON.push({
+          obj: document.getElementById("showName").textContent,
+          color: document.getElementById("myColor").value,
+          opacity: document.getElementById("myOpacity").value,
+          scale: document.getElementById('myScale').value,
+          pos: document.getElementById('myPos').value,
+          rotate: document.getElementById('myRotate').value,
+          animate: document.getElementById('myAnimation').value,
+          to: document.getElementById('to').value,
+          repeat: document.getElementById('repeat').value
+        });
+      }
+      else{
+        myObjJSON.push({
+          obj: document.getElementById("showName").textContent,
+          color: document.getElementById("myColor").value,
+          opacity: document.getElementById("myOpacity").value,
+          scale: document.getElementById('myScale').value,
+          pos: document.getElementById('myPos').value,
+          rotate: document.getElementById('myRotate').value,
+          animate: document.getElementById('myAnimation').value,
+          to: document.getElementById('to').value,
+          repeat: "0"
+        });
+      }
       //converts the JSON to string
       myString = JSON.stringify(myObjJSON);
       //Puts the string in a hidden input type to send to the backend.

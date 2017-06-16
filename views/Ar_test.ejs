@@ -35,7 +35,7 @@
       animation.setAttribute('attribute',"<%= response.objects[key].animate %>");
       animation.setAttribute('dur',"5000");
       animation.setAttribute('to',"<%= response.objects[key].to %>");
-      animation.setAttribute('repeat',"indefinite");
+      animation.setAttribute('repeat',"<%= response.objects[key].repeat %>");
       entity.appendChild(animation);
     <% } %>
     marker.appendChild(entity);
